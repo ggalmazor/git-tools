@@ -2,7 +2,7 @@
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
 const inquirer = require('inquirer');
-const {Branch, listBranches} = require('./branch');
+const {listBranches} = require('./branch');
 
 const promptSelectBranch = branches => inquirer
     .prompt([{
@@ -23,8 +23,8 @@ const promptName = () => inquirer
 
 const run = async (issue) => {
   const branches = await listBranches();
-  const localBranches = branches.filter(b => b.isIssue(issue)).filter(b => b.isLocal())
-  const remoteBranches = branches.filter(b => b.isIssue(issue)).filter(b => !b.isLocal())
+  const localBranches = branches.filter(b => b.isIssue(issue)).filter(b => b.isLocal());
+  const remoteBranches = branches.filter(b => b.isIssue(issue)).filter(b => !b.isLocal());
 
   if (localBranches.length === 0 && remoteBranches.length === 0) {
     await exec(`git checkout master`);
@@ -58,7 +58,7 @@ const run = async (issue) => {
     if (remoteBranches.some(b => b.name === localBranches[0].name))
       await exec(`git pull`);
   }
-}
+};
 
 run(process.argv[2], process.argv.slice(3).join("_"))
     .catch(e => console.error(e));

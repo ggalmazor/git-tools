@@ -19,7 +19,7 @@ class Branch {
   }
 
   isIssue(issue) {
-    return this.name.indexOf(`issue_${issue}_`) != -1;
+    return this.name.indexOf(`issue_${issue}_`) !== -1;
   }
 
   isLocal() {
@@ -37,12 +37,14 @@ class Branch {
 
 const listBranches = async () => {
   const {stdout, stderr} = await exec('git branch -a');
-  if (stderr)
+  if (stderr) {
     console.error('stderr:', stderr);
+    throw new Error("Error trying to get the list of branches")
+  }
   return stdout.split("\n")
       .map(s => s.trim())
       .filter(s => s.length > 0)
       .map(Branch.from);
-}
+};
 
-module.exports = {Branch, listBranches};
+module.exports = {listBranches};

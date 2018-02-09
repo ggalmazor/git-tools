@@ -2,7 +2,7 @@
 
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
-const {Branch, listBranches} = require('./branch');
+const {listBranches} = require('./branch');
 
 const run = async (pr) => {
   if (pr === 'all') {
@@ -14,7 +14,7 @@ const run = async (pr) => {
   }
   await exec('git checkout master');
   await exec(`git branch -D pr${pr} &> /dev/null`)
-}
+};
 
 run(process.argv[2])
     .catch(e => console.error(e));

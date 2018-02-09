@@ -1,0 +1,22 @@
+{
+  "name": "git-tools",
+  "version": "1.0.0",
+  "description": "- Place these scripts somewhere on your path. - Run `npm install inquirer` on the same directory where you have copied them - Pro-tip: remove the '.js' extension of 'issue.js', 'pr.js' and 'prc.js'",
+  "main": "issue.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gist.github.com/1ffd75449481bcce9925f0cf5d733896.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gist.github.com/1ffd75449481bcce9925f0cf5d733896"
+  },
+  "homepage": "https://gist.github.com/1ffd75449481bcce9925f0cf5d733896",
+  "dependencies": {
+    "inquirer": "^5.1.0"
+  }
+}
