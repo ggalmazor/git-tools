@@ -1,7 +1,7 @@
 # Quick & dirty Git tools
 ## Installation
 
-- place these scripts somewhere on your path.
+- Place these scripts somewhere on your path.
 - Run `npm install inquirer` on the same directory where you have copied them
 - Pro-tip: remove the '.js' extension of 'issue.js', 'pr.js' and 'prc.js'
 
