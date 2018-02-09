@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
-const {listBranches} = require('./branch');
+const {listBranches, exec} = require('./misc');
 
 const run = async (pr) => {
   if (pr === 'all') {

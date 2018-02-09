@@ -1,25 +1,6 @@
 #!/usr/bin/env node
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
-const inquirer = require('inquirer');
-const {listBranches} = require('./branch');
 
-const promptSelectBranch = branches => inquirer
-    .prompt([{
-      type: "list",
-      name: "selectedBranch",
-      message: "Select a remote branch",
-      choices: branches.map(b => b.name)
-    }])
-    .then(({selectedBranch}) => selectedBranch);
-
-const promptName = () => inquirer
-    .prompt([{
-      type: "input",
-      name: "name",
-      message: "Provide a name for the new branch"
-    }])
-    .then(({name}) => name.replace(/ /g, "_"));
+const {listBranches, exec, promptName, promptSelectBranch} = require('./misc');
 
 const run = async (issue) => {
   const branches = await listBranches();

@@ -1,5 +1,9 @@
+const inquirer = require('inquirer');
 const util = require('util');
-const exec = util.promisify(require('child_process').exec);
+const exec = command => {
+  console.log(command);
+  return util.promisify(require('child_process').exec)(command);
+};
 
 class Branch {
   constructor(name, active, remote) {
@@ -47,4 +51,22 @@ const listBranches = async () => {
       .map(Branch.from);
 };
 
-module.exports = {listBranches};
+const promptSelectBranch = branches => inquirer
+    .prompt([{
+      type: "list",
+      name: "selectedBranch",
+      message: "Select a remote branch",
+      choices: branches.map(b => b.name)
+    }])
+    .then(({selectedBranch}) => selectedBranch);
+
+const promptName = () => inquirer
+    .prompt([{
+      type: "input",
+      name: "name",
+      message: "Provide a name for the new branch"
+    }])
+    .then(({name}) => name.replace(/ /g, "_"));
+
+
+module.exports = {listBranches, exec, promptName, promptSelectBranch};

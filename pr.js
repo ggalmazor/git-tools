@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-const util = require('util');
-const exec = util.promisify(require('child_process').exec);
+const {exec} = require('./misc');
 
 const run = async (pr) => {
   await exec(`prc ${pr}`);

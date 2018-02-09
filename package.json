@@ -4,6 +4,7 @@
   "description": "- Place these scripts somewhere on your path. - Run `npm install inquirer` on the same directory where you have copied them - Pro-tip: remove the '.js' extension of 'issue.js', 'pr.js' and 'prc.js'",
   "main": "issue.js",
   "scripts": {
+    "install:bin": "npm install && cp misc.js ~/bin/misc.js && cp issue.js ~/bin/issue && cp pr.js ~/bin/pr.js && cp prc.js ~/bin/prc && cp -r node_modules ~/bin && chmod +x ~/bin/issue && chmod +x ~/bin/pr && chmod +x ~/bin/prc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
