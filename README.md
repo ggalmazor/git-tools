@@ -11,6 +11,8 @@
 
 This script switches to an issue branch. Issue branches follow the format 'issue_X_some_name'.
 
+Example usage: `issue 42`
+
 | local match | remote match | What happens? |
 | --- | --- | --- |
 | none | none | You are prompted for a name and a new branch is created |
