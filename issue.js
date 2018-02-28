@@ -1,45 +1,56 @@
 #!/usr/bin/env node
 
-const {listBranches, exec, promptName, promptSelectBranch} = require('./misc');
+const {listBranches, exec, promptName, promptSelectBranch, Branch} = require('./misc');
 
-const run = async (issue) => {
-  const branches = await listBranches();
-  const localBranches = branches.filter(b => b.isIssue(issue)).filter(b => b.isLocal());
-  const remoteBranches = branches.filter(b => b.isIssue(issue)).filter(b => !b.isLocal());
+const cleanAll = async () => {
+  await exec('git checkout master');
+  const branches = await listBranches(Branch.isLocal.and(Branch.isIssue));
+  branches.forEach(async branch => exec(`git branch -D ${branch.name} &> /dev/null`));
+};
 
+const clean = async number => {
+  await exec('git checkout master');
+  const branches = await listBranches(Branch.isLocal.and(Branch.isIssue(number)));
+  branches.forEach(async branch => exec(`git branch -D ${branch.name} &> /dev/null`));
+};
+
+const selectBranch = async (localBranches, remoteBranches) => {
+  if (localBranches.length === 0 && remoteBranches.length === 1)
+    return remoteBranches[0];
+
+  if (localBranches.length === 0 && remoteBranches.length > 1)
+    return await promptSelectBranch(remoteBranches);
+
+  if (localBranches.length === 1)
+    return localBranches[0];
+
+  if (localBranches.length > 1)
+    return await promptSelectBranch(localBranches);
+};
+
+const checkout = async number => {
+  await exec(`git checkout master`);
+
+  const localBranches = await listBranches(Branch.isLocal.and(Branch.isIssue(number)));
+  const remoteBranches = await listBranches(Branch.isRemote.and(Branch.isIssue(number)));
   if (localBranches.length === 0 && remoteBranches.length === 0) {
-    await exec(`git checkout master`);
     const name = await promptName();
-    await exec(`git checkout -b issue_${issue}_${name}`);
-  }
-
-  if (localBranches.length === 0 && remoteBranches.length === 1) {
-    await exec(`git checkout master`);
-    await exec(`git checkout ${remoteBranches[0].name}`);
-    await exec(`git pull`);
-  }
-
-  if (localBranches.length === 0 && remoteBranches.length > 1) {
-    await exec(`git checkout master`);
-    promptSelectBranch(remoteBranches, async branch => await exec(`git checkout ${branch}`));
-    await exec(`git pull`);
-  }
-
-  if (localBranches.length === 1) {
-    await exec(`git checkout master`);
-    await exec(`git checkout ${localBranches[0].name}`);
-    if (remoteBranches.some(b => b.name === localBranches[0].name))
-      await exec(`git pull`);
-  }
-
-  if (localBranches.length > 1) {
-    await exec(`git checkout master`);
-    const selectedBranch = await promptSelectBranch(localBranches);
-    await exec(`git checkout ${selectedBranch}`);
-    if (remoteBranches.some(b => b.name === localBranches[0].name))
+    await exec(`git checkout -b issue_${number}_${name}`);
+  } else {
+    const selectedBranch = await selectBranch(localBranches, remoteBranches);
+    await exec(`git checkout ${selectedBranch.name}`);
+    if (remoteBranches.some(Branch.isIssue(number)))
       await exec(`git pull`);
   }
 };
 
-run(process.argv[2], process.argv.slice(3).join("_"))
+const run = async (arg1, arg2) => {
+  if (arg1 === 'clean' && arg2 === 'all')
+    return cleanAll();
+  if (arg1 === 'clean')
+    return clean(arg2);
+  return checkout(arg1);
+};
+
+run(process.argv[2], process.argv[3])
     .catch(e => console.error(e));
