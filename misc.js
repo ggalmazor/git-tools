@@ -1,16 +1,27 @@
 const inquirer = require('inquirer');
 const util = require('util');
+
+Function.prototype.and = function (other) {
+  const self = this;
+  return function (...args) {
+    return self.apply(self, args) && other.apply(other, args);
+  }
+};
+
+Function.prototype.not = function() {
+  const self = this;
+  return function (...args) {
+    return !self.apply(self, args)
+  }
+};
+
 const exec = command => {
   console.log(command);
   return util.promisify(require('child_process').exec)(command);
 };
 
-Function.prototype.and = function (other) {
-  const self = this;
-  return function (...args) {
-    return self.apply(this, args) && other.apply(other, args);
-  }
-};
+const startsWith = value => text => text.indexOf(value) === 0;
+const isEmpty = text => text.length === 0;
 
 class Option {
   static of(value) {
@@ -124,7 +135,7 @@ class Branch {
     const prefix = Option.of(number)
         .map(n => `issue_${n}_`)
         .orElse('issue_');
-    return this.name.indexOf(prefix) === 0;
+    return startsWith(prefix)(this.name);
   }
 
   isLocal() {
@@ -139,7 +150,7 @@ class Branch {
     const prefix = Option.of(number)
         .map(n => `pr_${n}`)
         .orElse('pr_');
-    return this.name.indexOf(prefix) === 0;
+    return startsWith(prefix)(this.name);
   }
 
   toString() {
@@ -155,10 +166,9 @@ const listBranches = async predicate => {
   }
   return stdout.split("\n")
       .map(s => s.trim())
-      .filter(s => s.length > 0)
-      .filter(s => s.indexOf("HEAD ->") === -1)
+      .filter(isEmpty.and(startsWith("HEAD ->").not()))
       .map(Branch.from)
-      .filter(Option.of(predicate).orElse(i => true));
+      .filter(Option.of(predicate).orElse(__ => true));
 };
 
 const promptSelectBranch = branches => inquirer
