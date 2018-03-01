@@ -1,22 +1,23 @@
 {
-  "name": "git-tools",
-  "version": "1.0.0",
-  "description": "- Place these scripts somewhere on your path. - Run `npm install inquirer` on the same directory where you have copied them - Pro-tip: remove the '.js' extension of 'issue.js', 'pr.js' and 'prc.js'",
-  "main": "issue.js",
-  "scripts": {
-    "install:bin": "npm install && cp misc.js ~/bin/misc.js && cp issue.js ~/bin/issue && cp pr.js ~/bin/pr && cp prc.js ~/bin/prc && cp -r node_modules ~/bin && chmod +x ~/bin/issue && chmod +x ~/bin/pr && chmod +x ~/bin/prc",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "name": "github-review-tools",
+  "version": "0.1.0",
+  "description": "Provides a pull and issue commands to help you reviewing GitHub pull requests and issues",
+  "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gist.github.com/1ffd75449481bcce9925f0cf5d733896.git"
+    "url": "git@github.com:ggalmazor/git-tools.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "ggalmazor@gmail.com",
+  "license": "Apache 2.0",
+  "preferGlobal": true,
+  "bin": {
+    "pull": "src/pull.js",
+    "issue": "src/issue.js"
+  },
   "bugs": {
-    "url": "https://gist.github.com/1ffd75449481bcce9925f0cf5d733896"
+    "url": "https://github.com/ggalmazor/git-tools/issues"
   },
-  "homepage": "https://gist.github.com/1ffd75449481bcce9925f0cf5d733896",
+  "homepage": "https://github.com/ggalmazor/git-tools",
   "dependencies": {
     "inquirer": "^5.1.0"
   }

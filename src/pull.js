@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 require('./lib/function-monkey-patch');
 
 const {isLocal, isPullRequest} = require('./lib/branch');
