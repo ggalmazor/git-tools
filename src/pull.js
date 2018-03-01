@@ -1,16 +1,19 @@
 #!/usr/bin/env node
+require('./lib/function-monkey-patch');
 
-const {listBranches, exec, Branch} = require('./misc');
+const {isLocal, isPullRequest} = require('./lib/branch');
+const {listBranches} = require('./lib/branch-utils');
+const {exec} = require('./lib/shell');
 
 const cleanAll = async () => {
   await exec('git checkout master');
-  const branches = await listBranches(Branch.isLocal.and(Branch.isPullRequest));
+  const branches = await listBranches(isLocal.and(isPullRequest));
   branches.forEach(async branch => exec(`git branch -D ${branch.name} &> /dev/null`));
 };
 
 const clean = async number => {
   await exec('git checkout master');
-  const branches = await listBranches(Branch.isLocal.and(Branch.isPullRequest(number)));
+  const branches = await listBranches(isLocal.and(isPullRequest(number)));
   branches.forEach(async branch => exec(`git branch -D ${branch.name} &> /dev/null`));
 };
 
