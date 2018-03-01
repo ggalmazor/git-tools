@@ -5,7 +5,7 @@
   "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git@github.com:ggalmazor/git-tools.git"
+    "url": "git@github.com:ggalmazor/github-review-tools.git"
   },
   "author": "ggalmazor@gmail.com",
   "license": "Apache 2.0",
@@ -15,9 +15,9 @@
     "issue": "src/issue.js"
   },
   "bugs": {
-    "url": "https://github.com/ggalmazor/git-tools/issues"
+    "url": "https://github.com/ggalmazor/github-review-tools/issues"
   },
-  "homepage": "https://github.com/ggalmazor/git-tools",
+  "homepage": "https://github.com/ggalmazor/github-review-tools",
   "dependencies": {
     "inquirer": "^5.1.0"
   }
