@@ -35,13 +35,8 @@ const selectBranch = async (localBranches, remoteBranches) => {
 
 const checkout = async number => {
   await exec(`git checkout master`);
-
-  console.log(isLocal.and(isIssue(number))(Branch.local("issue_33_cocotero")));
   const localBranches = await listBranches(isLocal.and(isIssue(number)));
   const remoteBranches = await listBranches(isRemote.and(isIssue(number)));
-
-  console.log(localBranches);
-
   if (localBranches.length === 0 && remoteBranches.length === 0) {
     const name = await promptBranchName();
     await exec(`git checkout -b issue_${number}_${name}`);
