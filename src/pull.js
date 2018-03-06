@@ -20,8 +20,8 @@ const clean = async number => {
 
 const checkout = async number => {
   await clean(number);
-  await exec(`git fetch origin pull/${number}/head:pr${number}`);
-  await exec(`git checkout pr${number}`);
+  await exec(`git fetch origin pull/${number}/head:pr_${number}`);
+  await exec(`git checkout pr_${number}`);
 };
 
 const run = async (arg1, arg2) => {
