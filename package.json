@@ -1,6 +1,6 @@
 {
   "name": "github-review-tools",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Provides a pull and issue commands to help you reviewing GitHub pull requests and issues",
   "scripts": {},
   "repository": {
